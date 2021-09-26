@@ -19,12 +19,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 */
 
 Route::group([
-    'prefix' => 'spayxadmin',
-    'middleware'=>['api_set_language','api_verify_user_integrity']], function (){
+    'prefix' => 'v1'
+], function (){
 
-    Route::post('usrbenaccstatus', 'Api\V1\UserManager\BenAccController@userBenAccStatus')
-        ->middleware(['api_verify_data:user_ben_acc_status']);
+    Route::group([
+        'prefix' => 'entity'
+    ], function (){
 
-    Route::post('saveadvantage', 'Api\V1\UserManager\BenAccController@saveAdvantage')
-        ->middleware(['api_verify_data:save_advantage']);
+        Route::get('list', 'Api\V1\EntityController@index')->name("api.v1.entity.list");
+
+        Route::post('create', 'Api\V1\EntityController@create')->name("api.v1.entity.create");
+
+        Route::post('update/{entity_id}', 'Api\V1\EntityController@update')->name("api.v1.entity.update");
+        Route::get('delete/{entity_id}', 'Api\V1\EntityController@delete')->name("api.v1.entity.delete");
+    });
 });
