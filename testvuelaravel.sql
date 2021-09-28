@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le :  Dim 26 sep. 2021 à 22:02
+-- Généré le :  mar. 28 sep. 2021 à 00:27
 -- Version du serveur :  5.7.24
--- Version de PHP :  7.2.11
+-- Version de PHP :  7.4.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -41,6 +41,14 @@ CREATE TABLE `entities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Déchargement des données de la table `entities`
+--
+
+INSERT INTO `entities` (`id`, `title`, `type`, `url`, `content`, `source`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'first document create', 'pdf', NULL, NULL, '/download/first_doc.pdf', '2021-09-28 00:01:02', '2021-09-28 00:01:02', NULL),
+(2, 'second document create', 'link', 'https://google.com', NULL, '', '2021-09-28 00:01:02', '2021-09-28 00:01:02', NULL);
+
+--
 -- Index pour les tables déchargées
 --
 
@@ -58,7 +66,7 @@ ALTER TABLE `entities`
 -- AUTO_INCREMENT pour la table `entities`
 --
 ALTER TABLE `entities`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
