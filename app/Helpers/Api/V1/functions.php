@@ -12,7 +12,7 @@ if (!function_exists('return_data_status')) {
     function return_data_status(string $type, $data = null, int $status, string $message = null)
     {
         try{
-            return response()->json(['type' => $type, 'data' => $data, 'status' => $status, 'message' => $message], 200);
+            return response()->json(['type' => $type, 'elements' => $data, 'status' => $status, 'message' => $message], 200);
         }catch (\Exception $e){
             return response()->json(['type' => $type, 'status' => $status, 'message' => __('messages.error_system')], 200);
         }

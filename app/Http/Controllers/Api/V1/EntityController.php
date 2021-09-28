@@ -16,10 +16,10 @@ class EntityController extends Controller
     public function index(Request $request){
         try{
 
-            $entities = Entities::all();
-            return response()->json(return_data_status('success', $entities, 200, __('messages.success')), 200);
+            $entities = Entities::orderBy('created_at', 'DESC')->paginate(15);
+            return return_data_status('success', $entities, 200, __('messages.success'));
         }catch (\Exception $e){
-            return response()->json(return_data_status('error', null, 500), 200);
+            return return_data_status('error', null, 500);
         }
     }
 
@@ -39,10 +39,10 @@ class EntityController extends Controller
             $entity->save();
 
             DB::commit();
-            return response()->json(return_data_status('success', $entity, 200, __('messages.success_create')), 200);
+            return return_data_status('success', $entity, 200, __('messages.success_create'));
         }catch (\Exception $e){
             DB::rollBack();
-            return response()->json(return_data_status('error', null, 500), 200);
+            return return_data_status('error', null, 500);
         }
     }
 
@@ -61,10 +61,10 @@ class EntityController extends Controller
             $entity->save();
 
             DB::commit();
-            return response()->json(return_data_status('success', $entity, 200, __('messages.success_update')), 200);
+            return return_data_status('success', $entity, 200, __('messages.success_update'));
         }catch (\Exception $e){
             DB::rollBack();
-            return response()->json(return_data_status('error', $entity, 500), 200);
+            return return_data_status('error', $entity, 500);
         }
     }
 
@@ -78,10 +78,10 @@ class EntityController extends Controller
             DB::beginTransaction();
             $entity->delete();
             DB::commit();
-            return response()->json(return_data_status('success', $entity, 200, __('messages.success_delete')), 200);
+            return return_data_status('success', $entity, 200, __('messages.success_delete'));
         }catch (\Exception $e){
             DB::rollBack();
-            return response()->json(return_data_status('error', $entity, 500), 200);
+            return return_data_status('error', $entity, 500);
         }
     }
 
