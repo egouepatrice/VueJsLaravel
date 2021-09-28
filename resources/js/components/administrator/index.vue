@@ -13,15 +13,9 @@
 
                             <ul class="uk-navbar-nav">
                                 <li>
-                                    <button class="uk-button uk-button-primary uk-text-bold">Create pdf</button>
-                                </li>
-
-                                <li>
-                                    <button class="uk-button uk-button-danger">Create html snippet</button>
-                                </li>
-
-                                <li>
-                                    <button class="uk-button uk-button-primary">Create link</button>
+                                    <button class="uk-button uk-button-primary uk-text-bold" href="#admin_form_create_resource" uk-toggle>
+                                        Create a resource (pdf download, html snippet and link)
+                                    </button>
                                 </li>
                             </ul>
 
@@ -34,14 +28,21 @@
                 </div>
             </div>
         </div>
+
+        <!-- Add actions -->
+        <form_create_resource></form_create_resource>
+        <form_update_resource></form_update_resource>
     </div>
 </template>
 
 <script>
-    import table_resource from './table_resource'
+    import table_resource from '../inc/table_resource';
+    import form_create_resource from '../administrator/form_create_resource';
+    import form_update_resource from '../administrator/form_update_resource';
+
     export default {
         name: "index",
-        components: {table_resource}
+        components: {table_resource, form_create_resource, form_update_resource},
     }
 </script>
 

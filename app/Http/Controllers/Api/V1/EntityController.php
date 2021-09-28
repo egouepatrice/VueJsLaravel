@@ -16,7 +16,7 @@ class EntityController extends Controller
     public function index(Request $request){
         try{
 
-            $entities = Entities::orderBy('created_at', 'DESC')->paginate(15);
+            $entities = Entities::orderBy('created_at', 'DESC')->paginate(10);
             return return_data_status('success', $entities, 200, __('messages.success'));
         }catch (\Exception $e){
             return return_data_status('error', null, 500);
@@ -51,8 +51,9 @@ class EntityController extends Controller
      * @param Entities $entity_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Entities $entity){
+    public function update(Request $request, $id_entity){
         try{
+            $entity = Entities::find($id_entity);
             DB::beginTransaction();
             $entity->title = trim($request->title != null ? $request->title : $entity->title);
             $entity->url = $request->title != null ? $request->title : $entity->title;
@@ -73,8 +74,9 @@ class EntityController extends Controller
      * @param Entities $entity_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request, Entities $entity){
+    public function delete(Request $request, $id_entity){
         try{
+            $entity = Entities::find($id_entity);
             DB::beginTransaction();
             $entity->delete();
             DB::commit();

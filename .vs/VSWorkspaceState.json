@@ -1,6 +1,13 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\resources",
+    "\\resources\\js",
+    "\\resources\\js\\components",
+    "\\resources\\js\\components\\administrator",
+    "\\resources\\js\\components\\inc",
+    "\\resources\\js\\components\\visitor"
   ],
+  "SelectedNode": "\\resources\\js\\components\\visitor\\page.vue",
   "PreviewInSolutionExplorer": false
 }

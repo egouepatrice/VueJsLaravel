@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="block_welcome">
         Welcome
         <div class="uk-section uk-padding-remove">
             <h3>List of all resources create</h3>
@@ -13,10 +13,10 @@
 </template>
 
 <script>
-    import table_resource from "./visitor/table_resource";
+    import table_resource from './inc/table_resource';
     export default {
         name: "home",
-        components: {table_resource},
+        components: {table_resource}
     }
 </script>
 

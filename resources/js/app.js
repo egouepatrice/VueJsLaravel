@@ -22,10 +22,9 @@ const routes = [
     { path: "/", component: home },
     { path: "/page", component: page },
 
-
 ];
 
-const router = new VueRouter({routes});
+const router = new VueRouter({ routes });
 
 const app = new Vue({
     el: '#app',
