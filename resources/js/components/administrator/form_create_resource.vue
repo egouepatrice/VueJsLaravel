@@ -71,7 +71,7 @@
 
            gotoSuccess: function(e){
                e.preventDefault();
-               axios.post("/public/api/v1/entity/create", {
+               axios.post("/api/v1/entity/create", {
                    title          : this.title,
                    type           : this.type,
                    url            : this.url,
@@ -84,7 +84,10 @@
                            icon: response.data.type,
                            title: response.data.message,
                            showConfirmButton: false,
-                           timer: 2000
+                           timer: 2000,
+                           willClose: () => {
+                               $("#admin_form_create_resource .uk-modal-close").trigger('click');
+                           }
                        });
                    })
                    .catch();

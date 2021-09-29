@@ -1983,7 +1983,7 @@ var Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/di
   methods: {
     gotoSuccess: function gotoSuccess(e) {
       e.preventDefault();
-      axios.post("/public/api/v1/entity/create", {
+      axios.post("/api/v1/entity/create", {
         title: this.title,
         type: this.type,
         url: this.url,
@@ -1995,7 +1995,10 @@ var Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/di
           icon: response.data.type,
           title: response.data.message,
           showConfirmButton: false,
-          timer: 2000
+          timer: 2000,
+          willClose: function willClose() {
+            $("#admin_form_create_resource .uk-modal-close").trigger('click');
+          }
         });
       })["catch"]();
     }
@@ -2143,6 +2146,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _administrator_form_update_resource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../administrator/form_update_resource */ "./resources/js/components/administrator/form_update_resource.vue");
 //
 //
 //
@@ -2186,10 +2190,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 var Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "table_resource",
+  components: {
+    form_update_resource: _administrator_form_update_resource__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       resources: {
@@ -2200,7 +2209,7 @@ var Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/di
   created: function created() {
     var _this = this;
 
-    axios.get("/public/api/v1/entity/list").then(function (response) {
+    axios.get("/api/v1/entity/list").then(function (response) {
       return _this.resources = response.data;
     })["catch"](function (error) {
       return console.log(error);
@@ -2211,7 +2220,7 @@ var Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/di
       var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('/public/api/v1/entity/list?page=' + page).then(function (response) {
+      axios.get('/api/v1/entity/list?page=' + page).then(function (response) {
         return _this2.resources = response.data;
       });
     },
@@ -41876,57 +41885,55 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { attrs: { id: "admin_form_update_resource", "uk-modal": "" } },
+    [_vm._m(0)]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { attrs: { id: "admin_form_update_resource", "uk-modal": "" } },
-      [
-        _c("div", { staticClass: "uk-modal-dialog" }, [
-          _c("button", {
-            staticClass: "uk-modal-close-default",
-            attrs: { type: "button", "uk-close": "" }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "uk-modal-header" }, [
-            _c("h2", { staticClass: "uk-modal-title" }, [_vm._v("Modal Title")])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "uk-modal-body" }, [
-            _c("p", [
-              _vm._v(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "uk-modal-footer uk-text-right" }, [
-            _c(
-              "button",
-              {
-                staticClass: "uk-button uk-button-default uk-modal-close",
-                attrs: { type: "button" }
-              },
-              [_vm._v("Cancel")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "uk-button uk-button-primary",
-                attrs: { type: "button" }
-              },
-              [_vm._v("Save")]
-            )
-          ])
+    return _c("div", { staticClass: "uk-modal-dialog" }, [
+      _c("button", {
+        staticClass: "uk-modal-close-default",
+        attrs: { type: "button", "uk-close": "" }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "uk-modal-header" }, [
+        _c("h2", { staticClass: "uk-modal-title" }, [_vm._v("Modal Title")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "uk-modal-body" }, [
+        _c("p", [
+          _vm._v(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+          )
         ])
-      ]
-    )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "uk-modal-footer uk-text-right" }, [
+        _c(
+          "button",
+          {
+            staticClass: "uk-button uk-button-default uk-modal-close",
+            attrs: { type: "button" }
+          },
+          [_vm._v("Cancel")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "uk-button uk-button-primary",
+            attrs: { type: "button" }
+          },
+          [_vm._v("Save")]
+        )
+      ])
+    ])
   }
 ]
 render._withStripped = true
@@ -42090,7 +42097,7 @@ var render = function() {
         "table",
         {
           staticClass:
-            "uk-table uk-table-hover uk-table-divider uk-table-striped",
+            "uk-table uk-table-small uk-table-hover uk-table-divider uk-table-striped",
           attrs: { id: "list_of_resources" }
         },
         [
@@ -42145,7 +42152,18 @@ var render = function() {
                   _vm._v(" "),
                   _c("th", [
                     _c("ul", { staticClass: "uk-iconnav" }, [
-                      _vm._m(1, true),
+                      _c("li", [
+                        _c("a", {
+                          staticClass:
+                            "uk-icon-button uk-margin-small-right uk-text-primary",
+                          attrs: {
+                            href: "#",
+                            "uk-icon": "icon: file-edit",
+                            href: "#admin_form_update_resource" + resource.id,
+                            "uk-toggle": ""
+                          }
+                        })
+                      ]),
                       _vm._v(" "),
                       _c("li", [
                         _c("a", {
@@ -42160,8 +42178,14 @@ var render = function() {
                         })
                       ])
                     ])
-                  ])
-                ]
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "form_update_resource",
+                    _vm._b({}, "form_update_resource", resource, false)
+                  )
+                ],
+                1
               )
             }),
             0
@@ -42203,17 +42227,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Actions")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("a", {
-        staticClass: "uk-icon-button uk-margin-small-right uk-text-primary",
-        attrs: { href: "#", "uk-icon": "icon: file-edit" }
-      })
     ])
   }
 ]

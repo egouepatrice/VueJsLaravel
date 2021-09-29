@@ -1,5 +1,5 @@
 <template>
-    <div id="admin_form_update_resource" uk-modal>
+    <div :id="'admin_form_update_resource'" uk-modal>
         <div class="uk-modal-dialog">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div class="uk-modal-header">
