@@ -1,6 +1,6 @@
 <template>
     <div id="block_list_of_resources">
-        <table id="list_of_resources" class="uk-table uk-table-small uk-table-hover uk-table-divider uk-table-striped">
+        <table id="list_of_resources" class="uk-table uk-table-small uk-table-hover table-divider table-striped uk-margin-remove-bottom">
             <thead>
             <tr>
                 <th>ID</th>
@@ -28,33 +28,28 @@
                 <th>{{ resource.updated_at }}</th>
                 <th>
                     <ul class="uk-iconnav">
-                        <li><a class="uk-icon-button uk-margin-small-right uk-text-primary" uk-icon="icon: file-edit" @click="getResource(resource.id)" href="#admin_form_update_resource" uk-toggle></a></li>
+                        <li><a class="uk-icon-button uk-margin-small-right uk-text-primary" uk-icon="icon: file-edit" @click="resource_update = resource" href="#admin_form_update_resource" uk-toggle></a></li>
                         <li><a class="uk-icon-button uk-margin-small-right uk-text-danger" uk-icon="icon: trash" @click="deleteElement(resource.id)"></a></li>
                     </ul>
                 </th>
             </tr>
             </tbody>
         </table>
-        <form_update_resource
-                v-bind:id="resource_update.id"
-                v-bind:title="resource_update.title"
-                v-bind:type="resource_update.type"
-                v-bind:url="resource_update.url"
-                v-bind:content="resource_update.content">
-        </form_update_resource>
-
-        <pagination :data="resources" @pagination-change-page="getResults" class="mt-5"></pagination>
+        
+        <form_update_resource v-bind:resource="resource_update"></form_update_resource>
+        <pagination :data="resources.data" @pagination-change-page="getResults" class="mt-5 uk-align-right"></pagination>
     </div>
     
 </template>
 
 <script>
-    import form_update_resource from "../administrator/form_update_resource"
+    import form_update_resource from "./form_update_resource";
+    import pagination from "laravel-vue-pagination";
     const Swal = require('sweetalert2');
 
     export default {
         name: "table_resource",
-        components: {form_update_resource},
+        components: {form_update_resource, pagination},
         data(){
             return {
                 resources: { 'data': {}},
@@ -75,7 +70,8 @@
         methods: {
             getResults(page = 1) {
                 axios.get('/api/v1/entity/list?page=' + page)
-                    .then(response => (this.resources = response.data));
+                    .then(response => (this.resources = response.data))
+                    .catch(error => console.log(error));
             },
 
             getResource(id_resource){
@@ -104,7 +100,7 @@
                             didOpen: () => {
                                 Swal.showLoading()
                                 //Axios request to delete resource
-                                axios.get('/public/api/v1/entity/delete/' + idElement)
+                                axios.get('/api/v1/entity/delete/' + idElement)
                                     .then(function (response) {
                                         if(response.data.type == "success") $("#resource" + idElement).remove();
                                         Swal.fire({
@@ -114,9 +110,10 @@
                                             showConfirmButton: false,
                                             timer: 1000
                                         });
-                                    });
+                                    })
+                                    .catch(error => console.log(error));;
                             }
-                        })
+                        });
                     }
                 })
             }

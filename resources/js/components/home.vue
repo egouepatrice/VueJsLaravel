@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import table_resource from './inc/table_resource';
+    import table_resource from './visitor/table_resource';
     export default {
         name: "home",
         components: {table_resource}

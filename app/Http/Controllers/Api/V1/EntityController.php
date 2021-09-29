@@ -16,7 +16,7 @@ class EntityController extends Controller
     public function index(Request $request){
         try{
 
-            $entities = Entities::orderBy('created_at', 'DESC')->paginate(10);
+            $entities = Entities::orderBy('created_at', 'DESC')->paginate(6);
             return return_data_status('success', $entities, 200, __('messages.success'));
         }catch (\Exception $e){
             return return_data_status('error', null, 500);
@@ -70,7 +70,7 @@ class EntityController extends Controller
             $entity = Entities::find($id_entity);
             DB::beginTransaction();
             $entity->title = trim($request->title != null ? $request->title : $entity->title);
-            $entity->url = $request->title != null ? $request->title : $entity->title;
+            $entity->url = $request->url != null ? $request->url : $entity->url;
             $entity->content = $request->content_value != null ? $request->content_value : $entity->content;
             $entity->source = $request->source != null ? $request->source : $entity->source;
             $entity->save();

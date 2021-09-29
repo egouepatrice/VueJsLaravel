@@ -36,9 +36,9 @@
 </template>
 
 <script>
-    import table_resource from '../inc/table_resource';
-    import form_create_resource from '../administrator/form_create_resource';
-    import form_update_resource from '../administrator/form_update_resource';
+    import table_resource from './table_resource';
+    import form_create_resource from './form_create_resource';
+    import form_update_resource from './form_update_resource';
 
     export default {
         name: "index",

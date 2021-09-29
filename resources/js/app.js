@@ -13,7 +13,6 @@ import page from './components/visitor/page.vue';
 
 Vue.component('main_element', require('./components/main.vue').default);
 Vue.component('admin_home', require('./components/administrator/index').default);
-Vue.component('pagination', require('laravel-vue-pagination'));
 
 const routes = [
     // Administrator routes

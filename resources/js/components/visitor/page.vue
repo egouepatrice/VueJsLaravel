@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import table_resource from '../inc/table_resource';
+    import table_resource from '../administrator/table_resource';
     export default {
         name: "page",
         components: {table_resource},

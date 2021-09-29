@@ -13,11 +13,11 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     </head>
     <body>
-        <div id="app" class="uk-container uk-container-large uk-margin-medium-top">
-            <div class="uk-child-width-expand@s uk-height-max-large" uk-grid>
-
-                <div class="uk-width-1-1@m uk-padding-small">
-                    <div class="uk-card uk-card-default uk-card-body">
+        <div id="app" class="uk-container uk-container-large">
+            <main_element></main_element>
+            <div class="uk-child-width-expand@s" uk-grid>
+                <div class="uk-width-1-1@m uk-padding-small uk-margin-remove-top">
+                    <div class="uk-card uk-card-default uk-card-body uk-padding-remove-top">
                         <admin_home></admin_home>
                     </div>
                 </div>
