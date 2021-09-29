@@ -28,14 +28,21 @@
                 <th>{{ resource.updated_at }}</th>
                 <th>
                     <ul class="uk-iconnav">
-                        <li><a href="#" class="uk-icon-button uk-margin-small-right uk-text-primary" uk-icon="icon: file-edit" :href="'#admin_form_update_resource' + resource.id" uk-toggle></a></li>
-                        <li><a href="#" class="uk-icon-button uk-margin-small-right uk-text-danger" uk-icon="icon: trash" @click="deleteElement(resource.id)"></a></li>
+                        <li><a class="uk-icon-button uk-margin-small-right uk-text-primary" uk-icon="icon: file-edit" @click="getResource(resource.id)" href="#admin_form_update_resource" uk-toggle></a></li>
+                        <li><a class="uk-icon-button uk-margin-small-right uk-text-danger" uk-icon="icon: trash" @click="deleteElement(resource.id)"></a></li>
                     </ul>
                 </th>
-                <form_update_resource v-bind="resource"></form_update_resource>
             </tr>
             </tbody>
         </table>
+        <form_update_resource
+                v-bind:id="resource_update.id"
+                v-bind:title="resource_update.title"
+                v-bind:type="resource_update.type"
+                v-bind:url="resource_update.url"
+                v-bind:content="resource_update.content">
+        </form_update_resource>
+
         <pagination :data="resources" @pagination-change-page="getResults" class="mt-5"></pagination>
     </div>
     
@@ -50,7 +57,13 @@
         components: {form_update_resource},
         data(){
             return {
-                resources: { 'data': {}}
+                resources: { 'data': {}},
+                resource_update: {
+                    title: '',
+                    type: '',
+                    url: '',
+                    content: '',
+                }
             }
         },
         created(){
@@ -63,6 +76,12 @@
             getResults(page = 1) {
                 axios.get('/api/v1/entity/list?page=' + page)
                     .then(response => (this.resources = response.data));
+            },
+
+            getResource(id_resource){
+                axios.get('/api/v1/entity/list/' + id_resource)
+                    .then(response => this.resource_update = response.data.data)
+                    .catch(error => console.log(error));
             },
 
             deleteElement(idElement){

@@ -26,9 +26,10 @@ Route::group([
         'prefix' => 'entity'
     ], function (){
 
-        Route::get('list', 'Api\V1\EntityController@index')->name("api.v1.entity.list");
+        Route::get('list', 'Api\V1\EntityController@index')->name("api.v1.entity.get");
+        Route::get('list/{id_entity}', 'Api\V1\EntityController@indexToId')->name("api.v1.entity.get.id");
         Route::post('create', 'Api\V1\EntityController@create')->name("api.v1.entity.create");
-        Route::post('update/{id_entity}', 'Api\V1\EntityController@update')->name("api.v1.entity.update");
+        Route::patch('update/{id_entity}', 'Api\V1\EntityController@update')->name("api.v1.entity.update");
         Route::get('delete/{id_entity}', 'Api\V1\EntityController@delete')->name("api.v1.entity.delete");
     });
 });

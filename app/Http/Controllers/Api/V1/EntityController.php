@@ -25,6 +25,20 @@ class EntityController extends Controller
 
     /**
      * @param Request $request
+     * @param $id_entity
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function indexToId(Request $request, $id_entity){
+        try{
+            $entity = Entities::find($id_entity);
+            return return_data_status('success', $entity, 200, __('messages.success'));
+        }catch (\Exception $e){
+            return return_data_status('error', null, 500);
+        }
+    }
+
+    /**
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function create(Request $request){
@@ -48,7 +62,7 @@ class EntityController extends Controller
 
     /**
      * @param Request $request
-     * @param Entities $entity_id
+     * @param Entities $id_entity
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id_entity){
@@ -71,7 +85,7 @@ class EntityController extends Controller
 
     /**
      * @param Request $request
-     * @param Entities $entity_id
+     * @param Entities $id_entity
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request, $id_entity){

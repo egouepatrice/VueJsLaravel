@@ -2034,8 +2034,72 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "form_update_resource"
+  name: "form_update_resource",
+  props: ['id', 'title', 'type', 'url', 'content'],
+  data: function data() {
+    source: null;
+
+    return {
+      source: ''
+    };
+  },
+  methods: {
+    gotoUpdate: function gotoUpdate(e) {
+      e.preventDefault();
+      axios.patch("/api/v1/entity/update/" + this.id, {
+        title: this.title,
+        type: this.type,
+        url: this.url,
+        source: this.source,
+        content_value: this.content_value
+      }).then(function (response) {
+        if (response.data.type == 'success') {}
+
+        Swal.fire({
+          position: 'center',
+          icon: response.data.type,
+          title: response.data.message,
+          showConfirmButton: false,
+          timer: 2000,
+          willClose: function willClose() {
+            $("#admin_form_create_resource .uk-modal-close").trigger('click');
+          }
+        });
+      })["catch"]();
+    }
+  }
 });
 
 /***/ }),
@@ -2190,6 +2254,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 var Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
@@ -2203,6 +2274,12 @@ var Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/di
     return {
       resources: {
         'data': {}
+      },
+      resource_update: {
+        title: '',
+        type: '',
+        url: '',
+        content: ''
       }
     };
   },
@@ -2222,6 +2299,15 @@ var Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/di
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       axios.get('/api/v1/entity/list?page=' + page).then(function (response) {
         return _this2.resources = response.data;
+      });
+    },
+    getResource: function getResource(id_resource) {
+      var _this3 = this;
+
+      axios.get('/api/v1/entity/list/' + id_resource).then(function (response) {
+        return _this3.resource_update = response.data.data;
+      })["catch"](function (error) {
+        return console.log(error);
       });
     },
     deleteElement: function deleteElement(idElement) {
@@ -41888,7 +41974,189 @@ var render = function() {
   return _c(
     "div",
     { attrs: { id: "admin_form_update_resource", "uk-modal": "" } },
-    [_vm._m(0)]
+    [
+      _c(
+        "form",
+        {
+          staticClass: "uk-modal-dialog",
+          attrs: { id: "form_update_resource", method: "POST" },
+          on: { submit: _vm.gotoUpdate }
+        },
+        [
+          _c("button", {
+            staticClass: "uk-modal-close-default",
+            attrs: { type: "button", "uk-close": "" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-modal-header" }, [
+            _c("h2", { staticClass: "uk-modal-title" }, [
+              _vm._v("Update a resource : " + _vm._s(_vm.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "uk-modal-body" }, [
+            _c("div", { staticClass: "uk-margin" }, [
+              _c("label", [_vm._v("The tile of your resource")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.title,
+                    expression: "title"
+                  }
+                ],
+                staticClass: "uk-input",
+                attrs: {
+                  id: "txtTitle",
+                  type: "text",
+                  name: "title",
+                  placeholder: "title of the resource",
+                  required: ""
+                },
+                domProps: { value: _vm.title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.title = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "uk-margin" }, [
+              _c("label", [_vm._v("Select your resource")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.type,
+                      expression: "type"
+                    }
+                  ],
+                  staticClass: "uk-select",
+                  attrs: { id: "typeSelect", name: "type", required: "" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.type = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.type = this.value
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "pdf" } }, [_vm._v("pdf")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "html" } }, [_vm._v("html")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "url" } }, [_vm._v("link")])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _vm.type == "pdf"
+              ? _c("div", { staticClass: "uk-margin" }, [
+                  _c("label", [_vm._v("Upload your file")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "uk-input",
+                    attrs: { id: "txtpdf", type: "file", name: "source" }
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.type == "url"
+              ? _c("div", { staticClass: "uk-margin" }, [
+                  _c("label", [_vm._v("Your url")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.url,
+                        expression: "url"
+                      }
+                    ],
+                    staticClass: "uk-input",
+                    attrs: {
+                      id: "txturl",
+                      type: "url",
+                      name: "url",
+                      placeholder: "insert your url here",
+                      autocomplete: "off"
+                    },
+                    domProps: { value: _vm.url },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.url = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.type == "html"
+              ? _c("div", { staticClass: "uk-margin" }, [
+                  _c("label", [_vm._v("Html snippet")]),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.content,
+                        expression: "content"
+                      }
+                    ],
+                    staticClass: "uk-textarea",
+                    attrs: {
+                      id: "txthtml",
+                      name: "content_value",
+                      rows: "6",
+                      placeholder: "insert your html code here"
+                    },
+                    domProps: { value: _vm.content },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.content = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ]
+      )
+    ]
   )
 }
 var staticRenderFns = [
@@ -41896,43 +42164,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "uk-modal-dialog" }, [
-      _c("button", {
-        staticClass: "uk-modal-close-default",
-        attrs: { type: "button", "uk-close": "" }
-      }),
+    return _c("div", { staticClass: "uk-modal-footer uk-text-right" }, [
+      _c(
+        "button",
+        {
+          staticClass: "uk-button uk-button-default uk-modal-close",
+          attrs: { type: "button" }
+        },
+        [_vm._v("Cancel")]
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "uk-modal-header" }, [
-        _c("h2", { staticClass: "uk-modal-title" }, [_vm._v("Modal Title")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "uk-modal-body" }, [
-        _c("p", [
-          _vm._v(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "uk-modal-footer uk-text-right" }, [
-        _c(
-          "button",
-          {
-            staticClass: "uk-button uk-button-default uk-modal-close",
-            attrs: { type: "button" }
-          },
-          [_vm._v("Cancel")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "uk-button uk-button-primary",
-            attrs: { type: "button" }
-          },
-          [_vm._v("Save")]
-        )
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "uk-button uk-button-primary",
+          attrs: { type: "submit" }
+        },
+        [_vm._v("Update resource")]
+      )
     ])
   }
 ]
@@ -42157,10 +42406,14 @@ var render = function() {
                           staticClass:
                             "uk-icon-button uk-margin-small-right uk-text-primary",
                           attrs: {
-                            href: "#",
                             "uk-icon": "icon: file-edit",
-                            href: "#admin_form_update_resource" + resource.id,
+                            href: "#admin_form_update_resource",
                             "uk-toggle": ""
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.getResource(resource.id)
+                            }
                           }
                         })
                       ]),
@@ -42169,7 +42422,7 @@ var render = function() {
                         _c("a", {
                           staticClass:
                             "uk-icon-button uk-margin-small-right uk-text-danger",
-                          attrs: { href: "#", "uk-icon": "icon: trash" },
+                          attrs: { "uk-icon": "icon: trash" },
                           on: {
                             click: function($event) {
                               return _vm.deleteElement(resource.id)
@@ -42178,20 +42431,24 @@ var render = function() {
                         })
                       ])
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "form_update_resource",
-                    _vm._b({}, "form_update_resource", resource, false)
-                  )
-                ],
-                1
+                  ])
+                ]
               )
             }),
             0
           )
         ]
       ),
+      _vm._v(" "),
+      _c("form_update_resource", {
+        attrs: {
+          id: _vm.resource_update.id,
+          title: _vm.resource_update.title,
+          type: _vm.resource_update.type,
+          url: _vm.resource_update.url,
+          content: _vm.resource_update.content
+        }
+      }),
       _vm._v(" "),
       _c("pagination", {
         staticClass: "mt-5",
