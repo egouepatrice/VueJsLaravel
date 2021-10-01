@@ -1,49 +1,69 @@
 <template>
-    <div id="admin_form_create_resource" uk-modal>
-        <form id="form_create_resource" @submit="gotoSuccess" class="uk-modal-dialog" method="POST">
+    <div>
+        <button class="uk-button uk-button-primary uk-text-bold" href="#admin_form_create_resource" uk-toggle>
+            Create a resource (pdf download, html snippet and link)
+        </button>
 
-            <button class="uk-modal-close-default" type="button" uk-close></button>
-            <div class="uk-modal-header">
-                <h2 class="uk-modal-title">Create a new resource</h2>
-            </div>
+        <div id="admin_form_create_resource" uk-modal>
+            <form id="form_create_resource" @submit="gotoSuccess" class="uk-modal-dialog" enctype="multipart/form-data">
 
-            <div class="uk-modal-body">
-                <div class="uk-margin">
-                    <label>The tile of your resource</label>
-                    <input id="txtTitle" class="uk-input" type="text" name="title" v-model="title" placeholder="title of the resource" autocomplete="off" required>
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                <div class="uk-modal-header">
+                    <h2 class="uk-modal-title">Create a new resource</h2>
                 </div>
 
-                <div class="uk-margin">
-                    <label>Select your resource</label>
-                    <select id="typeSelect" name="type" class="uk-select" @change="type = this.value" v-model="type" required>
-                        <option value="pdf">pdf</option>
-                        <option value="html">html</option>
-                        <option value="url">link</option>
-                    </select>
+                <div class="uk-modal-body">
+                    <div class="uk-margin">
+                        <label>The tile of your resource</label>
+                        <input id="txtTitle" class="uk-input" type="text" name="title" v-model="title" placeholder="title of the resource" autocomplete="off" required>
+                    </div>
+
+                    <div class="uk-margin">
+                        <label>Select your resource</label>
+                        <select id="typeSelect" name="type" class="uk-select" v-on:change="updateType" v-model="type" required>
+                            <option value="pdf">pdf</option>
+                            <option value="html">html</option>
+                            <option value="link">link</option>
+                        </select>
+                    </div>
+
+                    <div class="uk-margin" v-if="type=='pdf'">
+                        <label>Upload your file</label>
+                        <input id="txtpdf" class="uk-input" type="file" name="source" v-on:change="onFileChange" accept="application/pdf">
+                    </div>
+
+                    <div class="uk-grid-small" uk-grid v-if="type=='link'">
+                        <div class="uk-width-1-1">
+                            <label>Your url</label>
+                            <input id="txturl" v-model="url" class="uk-input" type="url" name="url" placeholder="insert your link here" autocomplete="off">
+                        </div>
+
+                        <div class="uk-width-1-1">
+                            <label>Redirect to new windown frame ? </label>
+                            <input id="txttarget" v-model="target" class="uk-checkbox" type="checkbox" name="target">
+                        </div>
+                    </div>
+
+                    <div class="uk-grid-small" uk-grid v-if="type == 'html'">
+                        <div class="uk-width-1-1">
+                            <label>Html description</label>
+                            <textarea id="txthtmldesc" v-model="description" name="description" class="uk-textarea" rows="2" placeholder="insert your html description here"></textarea>
+                        </div>
+
+                        <div class="uk-width-1-1">
+                            <label>Html snippet</label>
+                            <textarea id="txthtml" v-model="content_value" name="content_value" class="uk-textarea" rows="7" placeholder="insert your html code here"></textarea>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="uk-margin" v-if="type=='pdf'">
-                    <label>Upload your file</label>
-                    <input id="txtpdf" class="uk-input" type="file" name="source" v-if="type=='pdf' ? 'required' : ''">
+                <div class="uk-modal-footer uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                    <button class="uk-button uk-button-primary" type="submit">Save resource</button>
                 </div>
-
-                <div class="uk-margin" v-if="type=='url'">
-                    <label>Your url</label>
-                    <input id="txturl" v-model="url" class="uk-input" type="url" name="url" placeholder="insert your url here" v-if="type=='url' ? 'required' : ''" autocomplete="off">
-                </div>
-
-                <div class="uk-margin" v-if="type=='html'">
-                    <label>Html snippet</label>
-                    <textarea id="txthtml" v-model="content_value" name="content_value" class="uk-textarea" rows="6" placeholder="insert your html code here" v-if="type=='html' ? 'required' : ''"></textarea>
-                </div>
-
-            </div>
-
-            <div class="uk-modal-footer uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                <button class="uk-button uk-button-primary" type="submit">Save resource</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -52,46 +72,67 @@
     export default {
         name: "form_create_resource",
         data(){
-            type: null;
-            title: null;
-            content_value: null;
-            url: null;
-            source: null;
+
+            type: 'pdf';
+            title: '';
+            content_value: '';
+            url: '';
+            source: '';
+            description: '';
+            target: '';
 
             return {
                 type: 'pdf',
                 title: '',
+                description: '',
                 content_value: '',
+                source: '',
                 url: '',
-                source: ''
+                target: '',
             }
         },
 
         methods: {
+            onFileChange(e){
+                this.file = e.target.files[0];
+            },
 
            gotoSuccess: function(e){
                e.preventDefault();
-               axios.post("/api/v1/entity/create", {
-                   title          : this.title,
-                   type           : this.type,
-                   url            : this.url,
-                   source         : this.source,
-                   content_value  : this.content_value,
-               })
-                   .then(function (response) {
-                       Swal.fire({
-                           position: 'center',
-                           icon: response.data.type,
-                           title: response.data.message,
-                           showConfirmButton: false,
-                           timer: 2000,
-                           willClose: () => {
-                               $("#admin_form_create_resource .uk-modal-close").trigger('click');
-                           }
-                       });
-                   })
+               let currentObj = this;
+               const config = {
+                   headers: { 'content-type': 'multipart/form-data' }
+               };
+
+               let formData = new FormData();
+               formData.append('type', this.type);
+               formData.append('title', this.title);
+               formData.append('description', this.description);
+               formData.append('content_value', this.content_value);
+               formData.append('source', this.source);
+               formData.append('url', this.url);
+               formData.append('target', this.target);
+               formData.append('file', this.file);
+
+               axios.post("/api/v1/entity/create", formData, config)
+                   .then(response => this.$emit('resource_create_refresh_list', response.data))
                    .catch(error => console.log(error));
-           }
+
+               /*
+               Swal.fire({
+                   title: 'Creating resource',
+                   timerProgressBar: true,
+                   didOpen: () => {
+                       Swal.showLoading();
+
+                   }
+               });
+               */
+           },
+
+            updateType(){
+               this.type = $("#typeSelect").val();
+            }
         }
     }
 </script>

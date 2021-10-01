@@ -14,7 +14,7 @@ if (!function_exists('return_data_status')) {
         try{
             return response()->json(['type' => $type, 'data' => $data, 'status' => $status, 'message' => $message], 200);
         }catch (\Exception $e){
-            return response()->json(['type' => $type, 'status' => $status, 'message' => __('messages.error_system')], 200);
+            return response()->json(['type' => $type, 'status' => $status, 'message' => $message], 200);
         }
     }
 }

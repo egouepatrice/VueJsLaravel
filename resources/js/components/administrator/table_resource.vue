@@ -1,5 +1,6 @@
 <template>
     <div id="block_list_of_resources">
+        <form_create_resource @resource_create_refresh_list="refresh_list"></form_create_resource>
         <table id="list_of_resources" class="uk-table uk-table-small uk-table-hover table-divider table-striped uk-margin-remove-bottom">
             <thead>
             <tr>
@@ -15,41 +16,42 @@
             </tr>
             </thead>
             <tbody>
-            <tr :id="'resource' + resource.id" v-for="resource in resources.data.data" :key="resource.id">
-                <th>{{ resource.id }}</th>
-                <th>{{ resource.title }}</th>
-                <th><strong>{{ resource.type }}</strong></th>
-
-                <th><a :href="resource.source" target="_blank">{{ resource.source ? 'click to download'  : 'NO DOCUMENT'  }}</a></th>
-                <th><a :href="resource.url" target="_blank">{{ resource.url ? resource.url : 'NO URL' }}</a></th>
-                <th><a href="#">{{ resource.content ? 'View code'  : 'NO HTML'  }}</a></th>
-
-                <th>{{ resource.created_at }}</th>
-                <th>{{ resource.updated_at }}</th>
-                <th>
-                    <ul class="uk-iconnav">
-                        <li><a class="uk-icon-button uk-margin-small-right uk-text-primary" uk-icon="icon: file-edit" @click="resource_update = resource" href="#admin_form_update_resource" uk-toggle></a></li>
-                        <li><a class="uk-icon-button uk-margin-small-right uk-text-danger" uk-icon="icon: trash" @click="deleteElement(resource.id)"></a></li>
-                    </ul>
-                </th>
-            </tr>
+                <tr :id="'resource' + resource.id" v-for="resource in resources.data.data" :key="resource.id">
+                    <th>{{ resource.id }}</th>
+                    <th>{{ resource.title }}</th>
+                    <th><strong>{{ resource.type }}</strong></th>
+                    <th><a :href="'/' + resource.source" v-if="resource.source" target="_blank">{{ resource.source ? 'click to download'  : 'NO DOCUMENT'  }}</a></th>
+                    <th><a :href="resource.url" :target="resource.target ? '_blank' : ''" v-if="resource.url">{{ resource.url ? resource.url : 'NO URL' }}</a></th>
+                    <th><a href="#resource_view_html_code" uk-toggle v-if="resource.content" @click='resource_update = resource'>{{ resource.content != null ? 'View code'  : "NO HTML"  }}</a></th>
+                    <th>{{ resource.created_at }}</th>
+                    <th>{{ resource.updated_at }}</th>
+                    <th>
+                        <ul class="uk-iconnav">
+                            <li><a class="uk-icon-button uk-margin-small-right uk-text-primary" uk-icon="icon: file-edit" @click="resource_update = resource" href="#admin_form_update_resource" uk-toggle></a></li>
+                            <li><a class="uk-icon-button uk-margin-small-right uk-text-danger" uk-icon="icon: trash" @click="deleteElement(resource.id)"></a></li>
+                        </ul>
+                    </th>
+                </tr>
             </tbody>
         </table>
-        
-        <form_update_resource v-bind:resource="resource_update"></form_update_resource>
+
+        <view_code v-bind:resource="resource_update"></view_code>
+        <form_update_resource v-bind:resource="resource_update" @resource_create_refresh_list="refresh_list"></form_update_resource>
         <pagination :data="resources.data" @pagination-change-page="getResults" class="mt-5 uk-align-right"></pagination>
     </div>
     
 </template>
 
 <script>
+    import form_create_resource from './form_create_resource';
     import form_update_resource from "./form_update_resource";
     import pagination from "laravel-vue-pagination";
+    import view_code from "../visitor/view_code_html";
     const Swal = require('sweetalert2');
 
     export default {
         name: "table_resource",
-        components: {form_update_resource, pagination},
+        components: {form_create_resource, form_update_resource, pagination, view_code},
         data(){
             return {
                 resources: { 'data': {}},
@@ -61,6 +63,7 @@
                 }
             }
         },
+
         created(){
             axios.get("/api/v1/entity/list")
                 .then(response => (this.resources = response.data))
@@ -78,6 +81,10 @@
                 axios.get('/api/v1/entity/list/' + id_resource)
                     .then(response => this.resource_update = response.data.data)
                     .catch(error => console.log(error));
+            },
+
+            refresh_list(resources){
+                this.resources = resources;
             },
 
             deleteElement(idElement){

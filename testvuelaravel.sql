@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le :  mar. 28 sep. 2021 à 00:27
+-- Généré le :  ven. 01 oct. 2021 à 22:28
 -- Version du serveur :  5.7.24
 -- Version de PHP :  7.4.7
 
@@ -33,20 +33,14 @@ CREATE TABLE `entities` (
   `title` varchar(255) NOT NULL,
   `type` varchar(20) NOT NULL DEFAULT 'pdf' COMMENT 'type of the entity create (pdf, html, link)',
   `url` text,
+  `target` tinyint(1) NOT NULL DEFAULT '0',
+  `description` text,
   `content` longtext,
   `source` text,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `entities`
---
-
-INSERT INTO `entities` (`id`, `title`, `type`, `url`, `content`, `source`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'first document create', 'pdf', NULL, NULL, '/download/first_doc.pdf', '2021-09-28 00:01:02', '2021-09-28 00:01:02', NULL),
-(2, 'second document create', 'link', 'https://google.com', NULL, '', '2021-09-28 00:01:02', '2021-09-28 00:01:02', NULL);
 
 --
 -- Index pour les tables déchargées
@@ -66,7 +60,7 @@ ALTER TABLE `entities`
 -- AUTO_INCREMENT pour la table `entities`
 --
 ALTER TABLE `entities`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
